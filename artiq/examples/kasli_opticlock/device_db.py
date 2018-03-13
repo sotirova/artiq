@@ -186,54 +186,66 @@ device_db = {
         "arguments": {"channel": 23},
     },
 
-    "spi_novogorny0": {
+    "spi_sampler0": {
         "type": "local",
         "module": "artiq.coredevice.spi2",
         "class": "SPIMaster",
         "arguments": {"channel": 24}
     },
-    "ttl_novogorny0_conv": {
+    "spi_sampler0_pgia": {
         "type": "local",
-        "module": "artiq.coredevice.ttl",
-        "class": "TTLOut",
+        "module": "artiq.coredevice.spi2",
+        "class": "SPIMaster",
         "arguments": {"channel": 25}
+    },
+    "ttl_sampler0_cnv": {
+        "type": "local",
+        "module": "artiq.coredevice.spi2",
+        "class": "SPIMaster",
+        "arguments": {"channel": 26}
+    },
+    "ttl_sampler0_sdr_mode": {
+        "type": "local",
+        "module": "artiq.coredevice.spi2",
+        "class": "SPIMaster",
+        "arguments": {"channel": 27}
     },
 
     "spi_urukul0": {
         "type": "local",
         "module": "artiq.coredevice.spi2",
         "class": "SPIMaster",
-        "arguments": {"channel": 26}
+        "arguments": {"channel": 28}
     },
     "ttl_urukul0_io_update": {
         "type": "local",
         "module": "artiq.coredevice.ttl",
         "class": "TTLOut",
-        "arguments": {"channel": 27}
+        "arguments": {"channel": 29}
     },
     "ttl_urukul0_sw0": {
         "type": "local",
         "module": "artiq.coredevice.ttl",
         "class": "TTLOut",
-        "arguments": {"channel": 28}
+        "arguments": {"channel": 30}
     },
     "ttl_urukul0_sw1": {
         "type": "local",
         "module": "artiq.coredevice.ttl",
         "class": "TTLOut",
-        "arguments": {"channel": 29}
+        "arguments": {"channel": 31}
     },
     "ttl_urukul0_sw2": {
         "type": "local",
         "module": "artiq.coredevice.ttl",
         "class": "TTLOut",
-        "arguments": {"channel": 30}
+        "arguments": {"channel": 32}
     },
     "ttl_urukul0_sw3": {
         "type": "local",
         "module": "artiq.coredevice.ttl",
         "class": "TTLOut",
-        "arguments": {"channel": 31}
+        "arguments": {"channel": 33}
     },
     "urukul0_cpld": {
         "type": "local",
@@ -295,12 +307,12 @@ device_db = {
         "type": "local",
         "module": "artiq.coredevice.ttl",
         "class": "TTLOut",
-        "arguments": {"channel": 32}
+        "arguments": {"channel": 34}
     },
     "led1": {
         "type": "local",
         "module": "artiq.coredevice.ttl",
         "class": "TTLOut",
-        "arguments": {"channel": 33}
+        "arguments": {"channel": 35}
     }
 }
