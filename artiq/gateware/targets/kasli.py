@@ -314,7 +314,7 @@ class Opticlock(_StandaloneBase):
 
         # EEM3: Sampler
         phy = spi2.SPIMaster(self.platform.request("eem3_spi_p"),
-                self.platform.request("eem3_spi_n"))
+                self.platform.request("eem3_spi_n"), data_width=16)
         self.submodules += phy
         rtio_channels.append(rtio.Channel.from_phy(phy, ififo_depth=16))
 
