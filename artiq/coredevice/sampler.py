@@ -66,6 +66,7 @@ class Sampler:
         self.gains |= gain << (channel*2)
         self.pgia_bus.set_config_mu(PGIA_SPI_CONFIG, 16, self.div, 1)
         self.pgia_bus.write(self.gains)
+        return self.pgia_bus.read()
 
     # @kernel
     # def init(self, data):
