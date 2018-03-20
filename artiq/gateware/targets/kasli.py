@@ -193,8 +193,8 @@ def _sampler(eem):
             Subsignal("n", Pins("{}:{}_n".format(j, _eem_signal(i)))),
             IOStandard("LVDS_25")
         ) for i, j, sig in [
-            (2, eem, "cnv"),
-            (3, eem, "sdr")
+            (2, eem, "sdr_mode"),
+            (3, eem, "cnv")
             ]
         ]
 
@@ -322,7 +322,7 @@ class Opticlock(_StandaloneBase):
         platform.add_extension(_dio("eem0"))
         platform.add_extension(_dio("eem1"))
         platform.add_extension(_dio("eem2"))
-        platform.add_extension(_novogorny("eem3"))
+        platform.add_extension(_sampler("eem3"))
         platform.add_extension(_urukul("eem5", "eem4"))
         platform.add_extension(_urukul("eem6"))
         platform.add_extension(_zotino("eem7"))
@@ -345,13 +345,18 @@ class Opticlock(_StandaloneBase):
             self.submodules += phy
             rtio_channels.append(rtio.Channel.from_phy(phy))
 
-        # EEM3: Novogorny
+        # EEM3: Sampler
         phy = spi2.SPIMaster(self.platform.request("eem3_spi_p"),
                 self.platform.request("eem3_spi_n"))
         self.submodules += phy
         rtio_channels.append(rtio.Channel.from_phy(phy, ififo_depth=16))
 
-        for signal in "conv".split():
+        phy = spi2.SPIMaster(self.platform.request("eem3_pgia_spi_p"),
+                self.platform.request("eem3_pgia_spi_n"))
+        self.submodules += phy
+        rtio_channels.append(rtio.Channel.from_phy(phy, ififo_depth=16))
+
+        for signal in "cnv sdr_mode".split():
             pads = platform.request("eem3_{}".format(signal))
             phy = ttl_serdes_7series.Output_8X(pads.p, pads.n)
             self.submodules += phy
