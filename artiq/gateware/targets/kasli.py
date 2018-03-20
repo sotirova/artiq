@@ -265,6 +265,44 @@ def _zotino(eem):
         ]
 
 
+def _sampler(eem):
+    return [
+        ("{}_spi_p".format(eem), 0,
+            Subsignal("clk", Pins("{}:{}_p".format(eem, _eem_signal(0)))),
+            Subsignal("miso", Pins("{}:{}_p".format(eem, _eem_signal(1)))),
+            IOStandard("LVDS_25"),
+        ),
+        ("{}_spi_n".format(eem), 0,
+            Subsignal("clk", Pins("{}:{}_n".format(eem, _eem_signal(0)))),
+            Subsignal("miso", Pins("{}:{}_n".format(eem, _eem_signal(1)))),
+            IOStandard("LVDS_25"),
+        ),
+        ("{}_pgia_spi_p".format(eem), 0,
+            Subsignal("clk", Pins("{}:{}_p".format(eem, _eem_signal(4)))),
+            Subsignal("mosi", Pins("{}:{}_p".format(eem, _eem_signal(5)))),
+            Subsignal("miso", Pins("{}:{}_p".format(eem, _eem_signal(6)))),
+            Subsignal("cs_n", Pins("{}:{}_p".format(eem, _eem_signal(7)))),
+            IOStandard("LVDS_25"),
+        ),
+        ("{}_pgia_spi_n".format(eem), 0,
+            Subsignal("clk", Pins("{}:{}_n".format(eem, _eem_signal(4)))),
+            Subsignal("mosi", Pins("{}:{}_n".format(eem, _eem_signal(5)))),
+            Subsignal("miso", Pins("{}:{}_n".format(eem, _eem_signal(6)))),
+            Subsignal("cs_n", Pins("{}:{}_n".format(eem, _eem_signal(7)))),
+            IOStandard("LVDS_25"),
+        ),
+        ] + [
+            ("{}_{}".format(eem, sig), 0,
+                Subsignal("p", Pins("{}:{}_p".format(j, _eem_signal(i)))),
+                Subsignal("n", Pins("{}:{}_n".format(j, _eem_signal(i)))),
+                IOStandard("LVDS_25")
+            ) for i, j, sig in [
+                (2, eem, "sdr_mode"),
+                (3, eem, "cnv"),
+            ]
+        ]
+
+
 def _urukul(eem, eem_aux=None):
     ios = [
         ("{}_spi_p".format(eem), 0,
