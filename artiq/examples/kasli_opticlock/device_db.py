@@ -193,7 +193,7 @@ device_db = {
         "arguments": {"channel": 24}
     },
     "spi_sampler0_pgia": {
-<<<<<<< HEAD
+
         "type": "local",
         "module": "artiq.coredevice.spi2",
         "class": "SPIMaster",
@@ -221,12 +221,24 @@ device_db = {
             "sdr_mode_device": "ttl_sampler0_sdr_mode",
             "pgia_spi_device": "spi_sampler0_pgia"
         }
-=======
+
+    "sampler0": {
+        "type": "local",
+        "module": "artiq.coredevice.sampler",
+        "class": "Sampler",
+        "arguments": {
+            "adc_spi_device": "spi_sampler0",
+            "cnv_device": "ttl_sampler0_cnv",
+            "sdr_mode_device": "ttl_sampler0_sdr_mode",
+            "pgia_spi_device": "spi_sampler0_pgia"
+        }
+    },
+
         "type": "local",
         "module": "artiq.coredevice.spi2",
         "class": "SPIMaster",
         "arguments": {"channel": 25}
->>>>>>> ff6eeb8a13cb9c054b555225e00e6f4e811bdfc8
+
     },
     "ttl_sampler0_cnv": {
         "type": "local",
