@@ -63,9 +63,10 @@ class Sampler:
         :param gain: Gain setting
         """
         self.gains &= ~(0b11 << (channel*2))
-        self.gains |= gain << (channel*2)
-        self.pgia_bus.set_config_mu(PGIA_SPI_CONFIG, 16, self.div, 1)
-        self.pgia_bus.write(self.gains)
+        self.gains |= gain << (channel*2) 
+        self.pgia_bus.set_config_mu(PGIA_SPI_CONFIG | spi.SPI_INPUT | 
+                                        spi.SPI_END, 16, self.div, 1)
+        self.pgia_bus.write(self.gains << 16)
         return self.pgia_bus.read()
 
     # @kernel
@@ -85,18 +86,25 @@ class Sampler:
     #     self.bus.write(data[len(data) - 1] << 24)
 
     @portable
-    def pos(self, data):
-        #Check if the voltage is positive or negative
-        return((data & 0xa000) >> 15)
+    def twos(self, data):
+        #Convert using two's complement
+        nbits = 16
+        if (data & (1<<(nbits-1))) != 0:
+            data = data - (1<<nbits)
+            data = -data
+        return data
 
 
     @portable
     def convert(self, data):
         """Convert a ADC result packet to SI units (Volt)"""
-
+        data = self.twos(data)
+        data = (data<<1) + 1
+        voltage = data/(2**16-1)*5
+        return voltage
 
     @kernel
-    def sample_mu(self, channel):
+    def sample_mu(self, next_ctrl):
         """Acquire a sample:
 
         Perform a conversion and transfer the sample.
@@ -106,9 +114,10 @@ class Sampler:
         """
         self.cnv.pulse(30*ns)  # t_CNVH
         delay(450*ns)  # t_CNV
-        self.adc_bus.set_config_mu(ADC_SPI_CONFIG | spi.SPI_END, 16, 
-                                    self.div, 1)
-        return [self.bus.read() for _ in range(last_ch)]
+        self.adc_bus.set_config_mu(ADC_SPI_CONFIG | spi.SPI_INPUT | 
+                                    spi.SPI_END, 16, self.div, 1)
+        self.adc_bus.write(next_ctrl << 16)
+        return self.adc_bus.read() #[i] for i in range(8)]
 
     def sample_channel_mu(self, channel=7):
         """ """
